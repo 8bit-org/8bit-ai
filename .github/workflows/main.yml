@@ -38,9 +38,6 @@ jobs:
           name: github-pages  # Name the artifact for GitHub Pages deployment
           path: ./docs/build  # Path to the Docusaurus build output
 
-
       - name: Deploy GitHub Pages site
-        uses: actions/deploy-pages@v4.0.5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/deploy-pages@v1
 
