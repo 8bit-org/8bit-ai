@@ -32,29 +32,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Detect package manager
-        id: detect-package-manager
-        run: |
-          if [ -f "${{ github.workspace }}/www/yarn.lock" ]; then
-            echo "manager=yarn" >> $GITHUB_OUTPUT
-            echo "command=install" >> $GITHUB_OUTPUT
-            echo "runner=yarn" >> $GITHUB_OUTPUT
-            exit 0
-          elif [ -f "${{ github.workspace }}/www/package.json" ]; then
-            echo "manager=npm" >> $GITHUB_OUTPUT
-            echo "command=ci" >> $GITHUB_OUTPUT
-            echo "runner=npx --no-install" >> $GITHUB_OUTPUT
-            exit 0
-          else
-            echo "Unable to determine package manager"
-            exit 1
-          fi
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: ${{ steps.detect-package-manager.outputs.manager }}
+          cache: "pnpm"
+
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -66,20 +51,20 @@ jobs:
         with:
           path: |
             www/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('www/**/package-lock.json', 'www/**/yarn.lock') }}-${{ hashFiles('www/**/*.[jt]s', 'www/**/*.[jt]sx') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('www/**/pnpm-lock.yaml') }}-${{ hashFiles('www/**/*.[jt]s', 'www/**/*.[jt]sx') }}
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('www/**/package-lock.json', 'www/**/yarn.lock') }}-
+            ${{ runner.os }}-nextjs-${{ hashFiles('www/**/pnpm-lock.yaml') }}-
 
       - name: Install dependencies
-        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+        run: pnpm install
         working-directory: www
 
       - name: Build with Next.js
-        run: ${{ steps.detect-package-manager.outputs.runner }} next build
+        run: pnpm next build
         working-directory: www
 
       - name: Export static files
-        run: ${{ steps.detect-package-manager.outputs.runner }} next export
+        run: pnpm next export
         working-directory: www
 
       - name: Upload artifact
