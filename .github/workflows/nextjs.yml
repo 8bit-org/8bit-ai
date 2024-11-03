@@ -38,10 +38,10 @@ jobs:
           node-version: "20"
           cache: "pnpm"
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: '8'  # Use the latest version or specify the version you need
+      - name: Install pnpm
+        run: |
+          npm install -g pnpm
+          pnpm --version  # Confirm pnpm is installed
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
