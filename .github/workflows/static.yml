@@ -25,7 +25,6 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -40,16 +39,16 @@ jobs:
         run: npm install
         working-directory: ./www
 
-      - name: Build Next.js app
-        run: npm run build
+      - name: Configure Next.js for static export
+        run: |
+          echo "module.exports = { output: 'export', trailingSlash: true };" > ./www/next.config.js
+
+      - name: Build and export Next.js app
+        run: npm run build && npm run export
         working-directory: ./www
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload the build output directory (./out for static export)
-          path: './www/out'
-
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./www/out
