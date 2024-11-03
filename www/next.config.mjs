@@ -3,7 +3,7 @@ import 'dotenv/config';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  output: 'export',
   distDir: 'out',
   basePath: '/8bit-ai',
   env: {
