@@ -1,0 +1,34 @@
+name: Deploy Docusaurus to GitHub Pages
+on:
+  push:
+    branches:
+      - master  # Triggers deployment on push to the master branch
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # Ensure this matches Docusaurus requirements
+
+      - name: Install dependencies
+        working-directory: ./docs
+        run: npm install
+
+      - name: Build Docusaurus site
+        working-directory: ./docs
+        run: npm run build
+      
+      - name: Deploy GitHub Pages site
+        uses: actions/deploy-pages@v4.0.5
+        with:
+          publish_dir: ./docs/build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
