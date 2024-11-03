@@ -29,6 +29,13 @@ jobs:
         working-directory: ./docs
         run: npm run build
 
+      - name: Upload build output as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-pages  # Name the artifact for GitHub Pages deployment
+          path: ./docs/build  # Path to the Docusaurus build output
+
+
       - name: Deploy GitHub Pages site
         uses: actions/deploy-pages@v4.0.5
         with:
