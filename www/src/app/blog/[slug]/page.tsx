@@ -12,6 +12,20 @@ import dayjs from 'dayjs'
 import type { Metadata } from 'next'
 import { PortableText } from 'next-sanity'
 import { notFound } from 'next/navigation'
+import client from '../../../../sanity.client';
+
+
+export async function generateStaticParams() {
+  const query = `*[_type == "post"]{
+    "slug": slug.current
+  }`;
+
+  const posts = await client.fetch(query);
+
+  return posts.map((post: any) => ({
+    slug: post.slug,
+  }));
+}
 
 export async function generateMetadata({
   params,
