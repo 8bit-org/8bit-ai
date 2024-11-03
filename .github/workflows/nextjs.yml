@@ -40,6 +40,7 @@ jobs:
       - name: Build Next.js app
         env:
           NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
+          NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
         run: pnpm run build
         working-directory: ./www
 
