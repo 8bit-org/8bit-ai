@@ -1,4 +1,11 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {}
+// www/next.config.mjs
+import 'dotenv/config';
 
-export default nextConfig
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  env: {
+    NEXT_PUBLIC_SANITY_DATASET: process.env.NEXT_PUBLIC_SANITY_DATASET,
+  },
+};
+
+export default nextConfig;
