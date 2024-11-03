@@ -10,7 +10,7 @@ jobs:
     permissions:
       contents: write       # Allows pushing to GitHub Pages
       id-token: write       # Required for authentication with GitHub Pages
-
+      pages: write          # Additional permission needed for Pages deployment
 
     steps:
       - name: Check out the repository
