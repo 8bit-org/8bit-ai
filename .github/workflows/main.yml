@@ -21,6 +21,9 @@ jobs:
         with:
           node-version: '18'  # Ensure this matches Docusaurus requirements
 
+      - name: Clean build directory
+        run: rm -rf ./docs/build  # Clears any old build files
+
       - name: Install dependencies
         working-directory: ./docs
         run: npm install
