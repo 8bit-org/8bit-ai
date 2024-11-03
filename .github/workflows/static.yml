@@ -25,7 +25,3 @@ jobs:
         working-directory: ./docs
         run: npm run build
 
-      - name: Move build output to /docs
-        run: |
-          rm -rf ./docs/*
-          mv ./docs/build/* ./docs/

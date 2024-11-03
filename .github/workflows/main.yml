@@ -7,6 +7,10 @@ on:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write       # Allows pushing to GitHub Pages
+      id-token: write       # Required for authentication with GitHub Pages
+
 
     steps:
       - name: Check out the repository
@@ -24,11 +28,11 @@ jobs:
       - name: Build Docusaurus site
         working-directory: ./docs
         run: npm run build
-      
+
       - name: Deploy GitHub Pages site
         uses: actions/deploy-pages@v4.0.5
         with:
           publish_dir: ./docs/build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
+
