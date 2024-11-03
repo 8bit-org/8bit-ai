@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # Docusaurus recommends Node.js 14 or higher
+          node-version: '18'  # Updated to Node.js 18 to meet requirements
 
       - name: Install dependencies
         working-directory: ./docs
