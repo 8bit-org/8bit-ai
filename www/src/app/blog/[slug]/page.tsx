@@ -16,15 +16,11 @@ import client from '../../../../sanity.client';
 
 
 export async function generateStaticParams() {
-  const query = `*[_type == "post"]{
-    "slug": slug.current
-  }`;
-
-  const posts = await client.fetch(query);
-
-  return posts.map((post: any) => ({
-    slug: post.slug,
-  }));
+  return [
+    { slug: 'first-post' },
+    { slug: 'second-post' },
+    // Add any other slugs that should be pre-rendered
+  ];
 }
 
 export async function generateMetadata({
