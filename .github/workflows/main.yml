@@ -41,8 +41,6 @@ jobs:
 
       - name: Deploy GitHub Pages site
         uses: actions/deploy-pages@v4.0.5
-        with:
-          publish_dir: ./docs/build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
