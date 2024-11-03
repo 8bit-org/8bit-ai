@@ -3,14 +3,11 @@ name: Deploy Docusaurus to GitHub Pages
 on:
   push:
     branches:
-      - main  # or the branch you want to trigger the deploy from
+      - master  # Triggers deployment on push to the master branch
 
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write  # Grants write permissions for contents
-
 
     steps:
       - name: Check out the repository
@@ -19,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Updated to Node.js 18 to meet requirements
+          node-version: '18'  # Ensure this matches Docusaurus requirements
 
       - name: Install dependencies
         working-directory: ./docs
@@ -29,10 +26,7 @@ jobs:
         working-directory: ./docs
         run: npm run build
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/build
-          # Optionally, you can specify a custom CNAME if you’re using a custom domain
-          # cname: "yourcustomdomain.com"
+      - name: Move build output to /docs
+        run: |
+          rm -rf ./docs/*
+          mv ./docs/build/* ./docs/
