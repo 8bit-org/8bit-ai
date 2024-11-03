@@ -17,3 +17,11 @@ export { metadata, viewport } from 'next-sanity/studio'
 export default function StudioPage() {
   return <NextStudio config={config} />
 }
+
+export async function generateStaticParams() {
+  return [
+    { tool: [] }, // for `/studio`
+    { tool: ['example'] }, // for `/studio/example`
+    // Add other paths you want to pre-render
+  ];
+}
