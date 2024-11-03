@@ -8,6 +8,9 @@ on:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Grants write permissions for contents
+
 
     steps:
       - name: Check out the repository
