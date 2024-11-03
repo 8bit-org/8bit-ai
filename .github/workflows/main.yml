@@ -35,7 +35,6 @@ jobs:
       - name: Upload build output as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: github-pages  # Name the artifact for GitHub Pages deployment
           path: ./docs/build  # Path to the Docusaurus build output
 
 
