@@ -5,6 +5,7 @@ import 'dotenv/config';
 const nextConfig = {
   output: 'standalone',
   distDir: 'out',
+  basePath: '/8bit-ai',
   env: {
     NEXT_PUBLIC_SANITY_DATASET: process.env.NEXT_PUBLIC_SANITY_DATASET,
   },
