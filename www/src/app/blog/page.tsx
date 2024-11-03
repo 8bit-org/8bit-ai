@@ -6,7 +6,6 @@ import { Link } from '@/components/link'
 import { Navbar } from '@/components/navbar'
 import { Heading, Lead, Subheading } from '@/components/text'
 import { image } from '@/sanity/image'
-import { useState, useEffect } from 'react'
 import {
   getCategories,
   getFeaturedPosts,
@@ -267,51 +266,22 @@ async function Pagination({
   )
 }
 
-export default function Blog({
+export default async function Blog({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
-  const [page, setPage] = useState(1)
-  const [category, setCategory] = useState<string | undefined>()
-  const [featuredPosts, setFeaturedPosts] = useState<JSX.Element | null>(null)
-  const [categoriesComponent, setCategoriesComponent] = useState<JSX.Element | null>(null)
-  const [postsComponent, setPostsComponent] = useState<JSX.Element | null>(null)
-  const [paginationComponent, setPaginationComponent] = useState<JSX.Element | null>(null)
-
-  useEffect(() => {
-    // Set page and category based on searchParams
-    const currentPage = 'page' in searchParams
+  let page =
+    'page' in searchParams
       ? typeof searchParams.page === 'string' && parseInt(searchParams.page) > 1
         ? parseInt(searchParams.page)
-        : 1
+        : notFound()
       : 1
-    setPage(currentPage)
 
-    const currentCategory = typeof searchParams.category === 'string'
+  let category =
+    typeof searchParams.category === 'string'
       ? searchParams.category
       : undefined
-    setCategory(currentCategory)
-
-    // Fetch components asynchronously
-    async function fetchComponents() {
-      if (currentPage === 1 && !currentCategory) {
-        const featured = await FeaturedPosts()
-        setFeaturedPosts(featured || null)
-      }
-
-      const categories = await Categories({ selected: currentCategory })
-      setCategoriesComponent(categories || null)
-
-      const posts = await Posts({ page: currentPage, category: currentCategory })
-      setPostsComponent(posts)
-
-      const pagination = await Pagination({ page: currentPage, category: currentCategory })
-      setPaginationComponent(pagination || null)
-    }
-
-    fetchComponents()
-  }, [searchParams])
 
   return (
     <main className="overflow-hidden">
@@ -327,11 +297,11 @@ export default function Blog({
           to sell smarter at your company.
         </Lead>
       </Container>
-      {featuredPosts}
+      {page === 1 && !category && <FeaturedPosts />}
       <Container className="mt-16 pb-24">
-        {categoriesComponent}
-        {postsComponent}
-        {paginationComponent}
+        <Categories selected={category} />
+        <Posts page={page} category={category} />
+        <Pagination page={page} category={category} />
       </Container>
       <Footer />
     </main>
